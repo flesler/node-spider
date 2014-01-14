@@ -1,0 +1,35 @@
+{
+  "name": "node-spider",
+  "author": "Ariel Flesler <aflesler@gmail.com>",
+  "version": "0.8.0",
+  "description": "Generic web crawler powered by NodeJS",
+  "main": "./index.js",
+  "dependencies": {
+    "cheerio": "0.13.x",
+    "request": "2.31.x"
+  },
+  "engines": {
+    "node": "latest",
+    "npm": "latest"
+  },
+  "scripts": {
+    "test": "node test/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/flesler/node-spider.git"
+  },
+  "keywords": [
+    "spider",
+    "crawler",
+    "node",
+    "nodejs",
+    "web",
+    "scrap",
+    "crawl"
+  ],
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/flesler/node-spider/issues"
+  }
+}

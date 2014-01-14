@@ -1,4 +1,4 @@
-crawler
+node-spider
 =======
 
-Generic web crawler
+Generic web crawler powered by NodeJS

@@ -47,7 +47,11 @@ Spider.prototype = {
                 if (!this.opts.error) throw err;
                 return this.opts.error(url, err);
             }
-
+            if (res.headers['content-type'].search('text') == -1) {
+                // do not attempt to parse a body with binary data
+                this.log('Not parsing non-text content-type', url);
+                delete res.body;
+            }
             var doc = new Document(url, res);
             this.log('Success', url);
             done.call(this, doc);

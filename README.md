@@ -1,42 +1,43 @@
 node-spider
 =======
 
-Generic web crawler powered by NodeJS
+Generic web crawler powered by Node.js
 
 # Installation
 Using npm:
 
-    $ npm install node-spider
+		$ npm install node-spider
 
 To run the tests:
 
-    $ grunt test
+		$ grunt test
 
 # Usage
 ```js
 var Spider = require('node-spider');
+
 var spider = new Spider({
-  concurrent: 5,
-  logs: true,
-  headers: { 'user-agent': 'node-spider' },
-  error: function(url, err){
-    // handle error
-  },
-  done: function() {
-    // all requests are done
-  }
+	concurrent: 5,
+	logs: true,
+	headers: { 'user-agent': 'node-spider' },
+	error: function(url, err){
+		// handle error
+	},
+	done: function() {
+		// all requests are done
+	}
 );
 
 var handleRequest = function(doc){
-  // request done
- 	console.log(doc.res); // request object
-  console.log(doc.url); // url
-  doc.$('a').each(function(){ // cheerio
-	  // do stuff on element
-	  var href = this.attr('href').split('#')[0];
-	  var url = doc.resolve(href);
-	  // crawl
-	  spider.queue(url, handleRequest);
+	// request done
+	console.log(doc.res); // request object
+	console.log(doc.url); // url
+	doc.$('a').each(function(){ // cheerio
+		// do stuff on element
+		var href = this.attr('href').split('#')[0];
+		var url = doc.resolve(href);
+		// crawl
+		spider.queue(url, handleRequest);
 	});
 };
 

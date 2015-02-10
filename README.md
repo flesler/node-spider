@@ -14,8 +14,8 @@ To run the tests:
 
 # Usage
 ```js
-
-spider = new Spider({
+var Spider = require('node-spider');
+var spider = new Spider({
   concurrent: 5,
   logs: true,
   headers: { 'user-agent': 'node-spider' },
@@ -29,17 +29,15 @@ spider = new Spider({
 
 var handleRequest = function(doc){
   // request done
-  console.log(doc.res); // request object
+ 	console.log(doc.res); // request object
   console.log(doc.url); // url
   doc.$('a').each(function(){ // cheerio
-    // do stuff on element
-    var href = this.attr('href');
-    var url = doc.resolve(href).split('#')[0];
-    if (condition) {
-      // crawl
-      spider.queue(url, handleRequest);
-    }
-  });
+	  // do stuff on element
+	  var href = this.attr('href').split('#')[0];
+	  var url = doc.resolve(href);
+	  // crawl
+	  spider.queue(url, handleRequest);
+	});
 };
 
 // start crawling

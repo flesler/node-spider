@@ -26,13 +26,13 @@ var spider = new Spider({
 	done: function() {
 		// all requests are done
 	}
-);
+});
 
-var handleRequest = function(doc){
+var handleRequest = function(doc) {
 	// request done
 	console.log(doc.res); // request object
 	console.log(doc.url); // url
-	doc.$('a').each(function(){ // cheerio
+	doc.$('a').each(function() { // cheerio
 		// do stuff on element
 		var href = this.attr('href').split('#')[0];
 		var url = doc.resolve(href);

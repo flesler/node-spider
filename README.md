@@ -27,7 +27,7 @@ var spider = new Spider({
 	allowDuplicates: false,
 	// If `true` all queued handlers will be try-catch'd, errors go to `error` callback
 	catchErrors: true,
-	// Called when there's an error, throw will be unused if none is provided
+	// Called when there's an error, throw will be used if none is provided
 	error: function(err, url){
 	},
 	// Called when there are no more requests

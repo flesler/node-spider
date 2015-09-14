@@ -6,11 +6,6 @@ function Spider(opts) {
 	opts.concurrent = opts.concurrent || 1;
 	opts.headers = opts.headers || {};
 
-	// Log can be a stream, but true defaults to stdout
-	if (opts.log === true) {
-		opts.log = process.stdout;
-	}
-
 	this.pending = [];
 	this.active = [];
 	this.visited = {};
@@ -48,11 +43,9 @@ Spider.prototype = {
 		this.log('Loading', url);
 		this.active.push(url);
 
-		request({
-			url: url,
-			headers: this.opts.headers,
-			encoding: this.opts.encoding
-		}, function(err, res, body) {
+		this.opts.url = url;
+		// All options passed to request
+		request(this.opts, function(err, res, body) {
 			if (err) {
 				return this.error(err, url);
 			}

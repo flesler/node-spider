@@ -1,16 +1,15 @@
 {
   "name": "node-spider",
   "author": "Ariel Flesler <aflesler@gmail.com>",
-  "version": "0.8.1",
-  "description": "Generic web crawler powered by NodeJS",
+  "version": "1.0.0",
+  "description": "Generic web crawler powered by Node.js",
   "main": "./index.js",
   "dependencies": {
-    "cheerio": "0.13.x",
-    "request": "2.31.x"
+    "cheerio": "0.19.x",
+    "request": "2.61.x"
   },
   "engines": {
-    "node": "latest",
-    "npm": "latest"
+    "node": "0.12.x"
   },
   "scripts": {
     "test": "node test/index"

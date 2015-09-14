@@ -1,77 +1,85 @@
 var request = require('request'),
-    Document = require('./lib/document');
+	Doc = require('./lib/Document');
 
 function Spider(opts) {
-    opts = this.opts = opts || {};
-    opts.concurrent = opts.concurrent || 1;
-    opts.headers = opts.headers || {};
+	opts = this.opts = opts || {};
+	opts.concurrent = opts.concurrent || 1;
+	opts.headers = opts.headers || {};
 
-    this.pending = [];
-    this.active = [];
-
-    //thid.crawled = {};
-};
+	this.pending = [];
+	this.active = [];
+	this.visited = {};
+}
 
 Spider.prototype = {
-    constructor: Spider,
+	constructor: Spider,
 
-    log: function(status, url) {
-        if (this.opts.logs) {
-            console.log('>>>', status, url);
-        }
-    },
+	log: function(status, url) {
+		if (this.opts.logs) {
+			console.log('Spider:', status, url);
+		}
+	},
 
-    full: function() {
-        return this.active.length >= this.opts.concurrent;
-    },
+	full: function() {
+		return this.active.length >= this.opts.concurrent;
+	},
 
-    queue: function(url, done) {
-        if (this.full()) {
-            this.log('Queueing', url);
-            this.pending.push({u:url, d:done});
-        } else {
-            this.load(url, done);
-        }
-    },
+	queue: function(url, done) {
+		if (this.visited[url]) return;
 
-    load: function(url, done) {
-        this.log('Loading', url);
-        this.active.push(url);
+		if (!this.allowDuplicates) {
+			this.visited[url] = true;
+		}
 
-        request({
-            url: url,
-            headers: this.opts.headers
-        }, function(err, res, body) {
-            if (err) {
-                this.log('Error', url);
-                if (!this.opts.error) throw err;
-                return this.opts.error(url, err);
-            }
+		if (this.full()) {
+			this.log('Queueing', url);
+			this.pending.push(arguments);
+		} else {
+			this.load(url, done);
+		}
+	},
 
-            var doc = new Document(url, res);
-            this.log('Success', url);
-            done.call(this, doc);
-            this.finished(url);
-        }.bind(this));
-    },
+	load: function(url, done) {
+		this.log('Loading', url);
+		this.active.push(url);
 
-    dequeue: function() {
-        var next = this.pending.shift();
-        if (next) {
-            this.load(next.u, next.d);
-        } else if (this.opts.done && this.active.length === 0) {
-            this.opts.done.call(this);
-        }
-    },
+		request({
+			url: url,
+			headers: this.opts.headers
+		}, function(err, res, body) {
+			if (err) {
+				this.log('Error', url);
+				if (!this.opts.error) throw err;
+				return this.opts.error(err, url);
+			}
 
-    finished: function(url) {
-        var i = this.active.indexOf(url);
-        this.active.splice(i, 1);
+			var doc = new Doc(url, res);
+			this.log('Success', url);
+			done.call(this, doc);
+			this.finished(url);
+		}.bind(this));
+	},
 
-        if (!this.full()) {
-            this.dequeue();
-        }
-    }
+	dequeue: function() {
+		var args = this.pending.shift();
+		if (args) {
+			this.load.apply(this, args);
+		} else if (this.opts.done && this.active.length === 0) {
+			this.opts.done.call(this);
+		}
+	},
+
+	finished: function(url) {
+		var i = this.active.indexOf(url);
+		if (i === -1) {
+			return this.log('URL was not active', url);
+		}
+		this.active.splice(i, 1);
+
+		if (!this.full()) {
+			this.dequeue();
+		}
+	}
 };
 
 module.exports = Spider;

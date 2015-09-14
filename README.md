@@ -8,16 +8,12 @@ Using npm:
 
 		$ npm install node-spider
 
-To run the tests:
-
-		$ grunt test
-
 # Usage
 ```js
 var Spider = require('node-spider');
 
 var spider = new Spider({
-	// How many requests can be running in parallel
+	// How many requests can be run in parallel
 	concurrent: 5,
 	// How long to wait after each request
 	delay: 0,
@@ -28,7 +24,7 @@ var spider = new Spider({
 	// If `true` all queued handlers will be try-catch'd, errors go to `error` callback
 	catchErrors: true,
 	// Called when there's an error, throw will be used if none is provided
-	error: function(err, url){
+	error: function(err, url) {
 	},
 	// Called when there are no more requests
 	done: function() {
@@ -40,14 +36,15 @@ var spider = new Spider({
 });
 
 var handleRequest = function(doc) {
-	// request done
-	console.log(doc.res); // request object
-	console.log(doc.url); // url
-	doc.$('a').each(function() { // cheerio
-		// do stuff on element
-		var href = this.attr('href').split('#')[0];
+	// new page crawled
+	console.log(doc.res); // response object
+	console.log(doc.url); // page url
+	// uses cheerio, check its docs for more info
+	doc.$('a').each(function(i, elem) {
+		// do stuff with element
+		var href = elem.attr('href').split('#')[0];
 		var url = doc.resolve(href);
-		// crawl
+		// crawl more
 		spider.queue(url, handleRequest);
 	});
 };

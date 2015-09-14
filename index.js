@@ -45,7 +45,7 @@ Spider.prototype = {
 
 		this.opts.url = url;
 		// All options passed to request
-		request(this.opts, function(err, res, body) {
+		request(this.opts, function(err, res, _) {
 			if (err) {
 				return this.error(err, url);
 			}

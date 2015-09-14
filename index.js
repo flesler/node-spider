@@ -45,7 +45,8 @@ Spider.prototype = {
 
 		request({
 			url: url,
-			headers: this.opts.headers
+			headers: this.opts.headers,
+			encoding: this.opts.encoding
 		}, function(err, res, body) {
 			if (err) {
 				this.log('Error', url);

@@ -5,3 +5,4 @@
 - Duplicated URLs are ignored unless `allowDuplicates` is `true`
 - Reversed `error()` callback's arguments
 - Added `delay` option to wait after each request
+- Added `encoding` option to set the requests encoding

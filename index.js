@@ -77,7 +77,11 @@ Spider.prototype = {
 		this.active.splice(i, 1);
 
 		if (!this.full()) {
-			this.dequeue();
+			if (this.opts.delay) {
+				setTimeout(this.dequeue.bind(this), this.opts.delay);
+			} else {
+				this.dequeue();
+			}
 		}
 	}
 };

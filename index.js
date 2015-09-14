@@ -6,6 +6,11 @@ function Spider(opts) {
 	opts.concurrent = opts.concurrent || 1;
 	opts.headers = opts.headers || {};
 
+	// Log can be a stream, but true defaults to stdout
+	if (opts.log === true) {
+		opts.log = process.stdout;
+	}
+
 	this.pending = [];
 	this.active = [];
 	this.visited = {};
@@ -16,7 +21,7 @@ Spider.prototype = {
 
 	log: function(status, url) {
 		if (this.opts.logs) {
-			console.log('Spider:', status, url);
+			this.opts.logs.write('Spider: ' + status + ' ' + url + '\n');
 		}
 	},
 
@@ -49,16 +54,25 @@ Spider.prototype = {
 			encoding: this.opts.encoding
 		}, function(err, res, body) {
 			if (err) {
-				this.log('Error', url);
-				if (!this.opts.error) throw err;
-				return this.opts.error(err, url);
+				return this.error(err, url);
 			}
 
 			var doc = new Doc(url, res);
 			this.log('Success', url);
-			done.call(this, doc);
+			if (this.opts.catchErrors) {
+				try { done.call(this, doc); }
+				catch (err) { this.error(err, url); }
+			} else {
+				done.call(this, doc);
+			}
 			this.finished(url);
 		}.bind(this));
+	},
+
+	error: function(err, url) {
+		this.log('Error', url);
+		if (!this.opts.error) throw err;
+		this.opts.error(err, url);
 	},
 
 	dequeue: function() {

@@ -1,5 +1,5 @@
 var request = require('request'),
-	Doc = require('./lib/Document');
+	Doc = require('./lib/document');
 
 function Spider(opts) {
 	opts = this.opts = opts || {};

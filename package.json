@@ -23,17 +23,21 @@
   },
   
   "devDependencies": {
+    "chai": "^3.4.0",
     "ghooks": "^0.3.2",
-    "jshint": "^2.8.0"
+    "jshint": "^2.8.0",
+    "mocha": "^2.3.3"
   },
 
   "scripts": {
+    "test": "./node_modules/.bin/mocha -b test/*.js",
     "lint": "./node_modules/.bin/jshint index.js lib/document.js"
   },
 
   "config": {
     "ghooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "npm run lint",
+      "pre-push": "npm test"
     }
   }
 }

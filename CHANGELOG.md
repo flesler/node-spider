@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0
+- Fixed document.$ (cheerio instance) was being recreated on every call
+- Implemented git hooks via ghooks module
+- Added jshint script, along with it's rc config and ignore files
+- Added a pre-commit hook to lint the code
+- Added tests powered by mocha+chai
+- Added a pre-push hook to test the code
+
 ## 1.2.2
 - request() errors hanging the flow fixed, thanks @arve0
 - require('./lib/Document') fixed, it's now lower case, thanks @arve0

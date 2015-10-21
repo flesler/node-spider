@@ -1,7 +1,7 @@
 {
   "name": "node-spider",
   "author": "Ariel Flesler <aflesler@gmail.com>",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "Generic web crawler powered by Node.js",
   "keywords": [
     "spider",
@@ -16,24 +16,20 @@
   "license": "BSD-2-Clause",
   "bugs": "https://github.com/flesler/node-spider/issues",
   "repository": "git://github.com/flesler/node-spider.git",
-  
   "dependencies": {
     "cheerio": "0.19.x",
     "request": "2.61.x"
   },
-  
   "devDependencies": {
     "chai": "^3.4.0",
     "ghooks": "^0.3.2",
     "jshint": "^2.8.0",
     "mocha": "^2.3.3"
   },
-
   "scripts": {
     "test": "./node_modules/.bin/mocha -b test/*.js",
     "lint": "./node_modules/.bin/jshint index.js lib/document.js"
   },
-
   "config": {
     "ghooks": {
       "pre-commit": "npm run lint",

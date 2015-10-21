@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2
+- request() errors hanging the flow fixed, thanks @arve0
+- require('./lib/Document') fixed, it's now lower case, thanks @arve0
+
 ## 1.2.1
 - `logs` cannot be `true` anymore, just specify a stream, or don't
 - All options are passed to `request`, so `headers` and `encoding` work implicitely now

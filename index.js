@@ -27,7 +27,7 @@ Spider.prototype = {
 	queue: function(url, done) {
 		if (this.visited[url]) return;
 
-		if (!this.allowDuplicates) {
+		if (!this.opts.allowDuplicates) {
 			this.visited[url] = true;
 		}
 
@@ -44,8 +44,7 @@ Spider.prototype = {
 		this.active.push(url);
 
 		this.opts.url = url;
-		// All options passed to request
-		request(this.opts, function(err, res, _) {
+		this._request(this.opts, function(err, res, _) {
 			if (err) {
 				this.error(err, url);
 				return this.finished(url);
@@ -61,6 +60,12 @@ Spider.prototype = {
 			}
 			this.finished(url);
 		}.bind(this));
+	},
+
+	// Wrap it for easier mocking
+	_request: function(opts, done) {
+		// All options forwarded to request()
+		request(opts, done);
 	},
 
 	error: function(err, url) {

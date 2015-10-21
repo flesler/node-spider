@@ -47,8 +47,8 @@ Spider.prototype = {
 		// All options passed to request
 		request(this.opts, function(err, res, _) {
 			if (err) {
-				this.finished(url);
-				return this.error(err, url);
+				this.error(err, url);
+				return this.finished(url);
 			}
 
 			var doc = new Doc(url, res);

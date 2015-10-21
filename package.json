@@ -3,18 +3,6 @@
   "author": "Ariel Flesler <aflesler@gmail.com>",
   "version": "1.2.2",
   "description": "Generic web crawler powered by Node.js",
-  "main": "./index.js",
-  "dependencies": {
-    "cheerio": "0.19.x",
-    "request": "2.61.x"
-  },
-  "engines": {
-    "node": "0.12.x"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/flesler/node-spider.git"
-  },
   "keywords": [
     "spider",
     "crawler",
@@ -24,8 +12,28 @@
     "scrap",
     "crawl"
   ],
+  "main": "./index.js",
   "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/flesler/node-spider/issues"
+  "bugs": "https://github.com/flesler/node-spider/issues",
+  "repository": "git://github.com/flesler/node-spider.git",
+  
+  "dependencies": {
+    "cheerio": "0.19.x",
+    "request": "2.61.x"
+  },
+  
+  "devDependencies": {
+    "ghooks": "^0.3.2",
+    "jshint": "^2.8.0"
+  },
+
+  "scripts": {
+    "lint": "./node_modules/.bin/jshint index.js lib/document.js"
+  },
+
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }

@@ -1,0 +1,28 @@
+{
+	"shadow": "inner",
+	"indent": 1,
+
+	"camelcase": false,
+	"eqeqeq": true,
+	"eqnull": true,
+	"freeze": true,
+	"funcscope": true,
+	"newcap": true,
+	"noarg": true,
+	"noempty": true,
+	"nonbsp": true,
+	"unused": "vars",
+	"undef": true,
+	"scripturl": true,
+	"strict": false,
+	"loopfunc": true,
+	"quotmark": "single",
+
+	"esnext": true,
+	"globals": {"define": true, "jade":true},
+	"browser": true,
+	"devel": true,
+	"mocha": true,
+	"node": true,
+	"jquery": true
+}

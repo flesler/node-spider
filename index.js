@@ -78,7 +78,11 @@ Spider.prototype = {
 		var args = this.pending.shift();
 		if (args) {
 			this.load.apply(this, args);
-		} else if (this.opts.done && this.active.length === 0) {
+		} else if (
+			this.opts.done &&
+			this.active.length === 0 &&
+			this.pending.length === 0
+		) {
 			this.opts.done.call(this);
 		}
 	},

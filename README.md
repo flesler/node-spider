@@ -42,7 +42,7 @@ var handleRequest = function(doc) {
 	// uses cheerio, check its docs for more info
 	doc.$('a').each(function(i, elem) {
 		// do stuff with element
-		var href = elem.attr('href').split('#')[0];
+		var href = doc.$(elem).attr('href').split('#')[0];
 		var url = doc.resolve(href);
 		// crawl more
 		spider.queue(url, handleRequest);
@@ -54,7 +54,7 @@ spider.queue('http://google.com/', handleRequest);
 ```
 # License
 
-Copyright (c) 2014-2015, Ariel Flesler
+Copyright (c) 2014, Ariel Flesler
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,

@@ -6,6 +6,14 @@ function Spider(opts) {
 	opts.concurrent = opts.concurrent || 1;
 	opts.headers = opts.headers || {};
 
+	if (opts.xhr) {
+		opts.headers['X-Requested-With'] = 'XMLHttpRequest';
+	}
+	if (opts.keepAlive) {
+		opts.headers.Connection = 'keep-alive';
+		opts.forever = true;
+	}
+
 	this.pending = [];
 	this.active = [];
 	this.visited = {};
@@ -39,9 +47,13 @@ Spider.prototype = {
 		}
 	},
 
-	load: function(url, done) {
+	load: function(url, done, referrer) {
 		this.log('Loading', url);
 		this.active.push(url);
+
+		if (this.opts.addReferrer) {
+			this.opts.headers.Referer = referrer;
+		}
 
 		this.opts.url = url;
 		this._request(this.opts, function(err, res, _) {
@@ -74,10 +86,10 @@ Spider.prototype = {
 		this.opts.error(err, url);
 	},
 
-	dequeue: function() {
+	dequeue: function(referrer) {
 		var args = this.pending.shift();
 		if (args) {
-			this.load.apply(this, args);
+			this.load.apply(this, args.concat(referrer));
 		} else if (this.opts.done && this.active.length === 0) {
 			this.opts.done.call(this);
 		}
@@ -92,9 +104,9 @@ Spider.prototype = {
 
 		if (!this.full()) {
 			if (this.opts.delay) {
-				setTimeout(this.dequeue.bind(this), this.opts.delay);
+				setTimeout(this.dequeue.bind(this, url), this.opts.delay);
 			} else {
-				this.dequeue();
+				this.dequeue(url);
 			}
 		}
 	}

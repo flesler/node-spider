@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0
+- Implemented `addReferrer` option
+- Implemented `keepAlive` option
+- Implemented `xhr` option
+
 ## 1.3.0
 - Fixed document.$ (cheerio instance) was being recreated on every call
 - Implemented git hooks via ghooks module

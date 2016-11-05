@@ -1,7 +1,7 @@
 {
   "name": "node-spider",
   "author": "Ariel Flesler <aflesler@gmail.com>",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Generic web crawler powered by Node.js",
   "keywords": [
     "spider",

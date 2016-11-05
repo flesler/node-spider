@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.1
+- Fixed bug when adding referrer
+
 ## 1.4.0
 - Implemented `addReferrer` option
 - Implemented `keepAlive` option

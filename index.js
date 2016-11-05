@@ -41,7 +41,7 @@ Spider.prototype = {
 
 		if (this.full()) {
 			this.log('Queueing', url);
-			this.pending.push(arguments);
+			this.pending.push([url, done]);
 		} else {
 			this.load(url, done);
 		}

@@ -5,7 +5,7 @@ var expect = require('chai').expect,
 describe('Document', function() {
 
 	const URL = 'https://www.google.com/somepage/index.html';
-	const HTML = '<html><head></head><body></body></html>';
+	const HTML = '<html><head></head><body><a href="other.html">link</a></body></html>';
 
 	var doc;
 	beforeEach(function() {
@@ -23,12 +23,26 @@ describe('Document', function() {
 	});
 
 	describe('resolve()', function() {
-		it('should resolve different variants of URLs and paths', function() {
-			expect(doc.resolve('/otherpage.html')).to.equal('https://www.google.com/otherpage.html');
+		it('should resolve relative paths', function() {
 			expect(doc.resolve('otherpage.html')).to.equal('https://www.google.com/somepage/otherpage.html');
 			expect(doc.resolve('./otherpage.html')).to.equal('https://www.google.com/somepage/otherpage.html');
+			expect(doc.resolve('../otherpage.html')).to.equal('https://www.google.com/otherpage.html');
+		});
+
+		it('should resolve root paths', function() {
+			expect(doc.resolve('/otherpage.html')).to.equal('https://www.google.com/otherpage.html');
+		});
+
+		it('should resolve querystrings', function() {
 			expect(doc.resolve('?key=value')).to.equal('https://www.google.com/somepage/index.html?key=value');
+		});
+
+		it('should resolve urls without protocol', function() {
 			expect(doc.resolve('//yahoo.com/page.html')).to.equal('https://yahoo.com/page.html');
+		});
+
+		it('should resolve absolute urls', function() {
+			expect(doc.resolve('http://yahoo.com/page.html')).to.equal('http://yahoo.com/page.html');
 		});
 	});
 

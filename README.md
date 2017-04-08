@@ -17,6 +17,10 @@ var spider = new Spider({
 	concurrent: 5,
 	// How long to wait after each request
 	delay: 0,
+	// A request jar object if needed, optional
+	cookieJar: request.jar(),
+	// The context in which the `done` method is called, optional
+	doneContext: this,
 	// A stream to where internal logs are sent, optional
 	logs: process.stderr,
 	// Re-visit visited URLs, false by default

@@ -5,6 +5,8 @@ function Spider(opts) {
 	opts = this.opts = opts || {};
 	opts.concurrent = opts.concurrent || 1;
 	opts.headers = opts.headers || {};
+	opts.jar = opts.cookieJar || null;
+	opts.doneContext = opts.doneContext || this;
 
 	if (opts.xhr) {
 		opts.headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -65,10 +67,10 @@ Spider.prototype = {
 			var doc = new Doc(url, res);
 			this.log('Success', url);
 			if (this.opts.catchErrors) {
-				try { done.call(this, doc); }
+				try { done.call(this.opts.doneContext, doc); }
 				catch (err) { this.error(err, url); }
 			} else {
-				done.call(this, doc);
+				done.call(this.opts.doneContext, doc);
 			}
 			this.finished(url);
 		}.bind(this));

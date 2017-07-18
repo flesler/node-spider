@@ -55,8 +55,7 @@ Spider.prototype = {
 			this.opts.headers.Referer = referrer;
 		}
 
-		this.opts.url = url;
-		this._request(this.opts, function(err, res, _) {
+		this._request(Object.assign({}, this.opts, {url: url}), function(err, res, _) {
 			if (err) {
 				this.error(err, url);
 				return this.finished(url);

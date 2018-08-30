@@ -14,7 +14,6 @@ describe('Spider', function() {
 	function mock(spider, fn) {
 		// Override once
 		spider._request = function(opts, done) {
-			spider._request = function(){};
 			fn(opts, done);
 		};
 	}
@@ -71,5 +70,24 @@ describe('Spider', function() {
 		});
 	});
 
-	// TO BE CONTINUED...
+    describe('Check extra headers per request', function() {
+        it('Should add extra headers to the request if provided', function() {
+            var spider = create();
+            mock(spider, function(opts) {
+                expect(opts.headers.testHeader).to.not.be.undefined;
+                expect(opts.headers.testHeader).to.be.eq('testHeaderValue');
+            });
+            spider.queue('a', function() {}, {"testHeader": "testHeaderValue"} );
+        });
+
+        it('Should not add any extra header if not provided, but keep the others', function() {
+            var spider = create({keepAlive: true});
+            mock(spider, function(opts) {
+                expect(opts.headers.testHeader).to.be.undefined;
+                expect(opts.headers.Connection).to.be.eq('keep-alive');
+            });
+            spider.queue('a', function() {} );
+        });
+    });
+    // TO BE CONTINUED...
 });

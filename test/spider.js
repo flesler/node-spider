@@ -89,5 +89,49 @@ describe('Spider', function() {
             spider.queue('a', function() {} );
         });
     });
+    describe('Check opts.delay as a function', function() {
+        it('Execute a fixed timeout', function(callback) {
+            var spider = create({ delay: 10,
+                done: ()  => {}
+            });
+
+            mock(spider, function(opts, done) {
+                setTimeout(() => done(null, "<html><head></head><body>test</body></html>"), 1)
+            });
+
+            var timeStamp1;
+            spider.queue('a', function() {
+                timeStamp1 = Date.now()
+            });
+
+            spider.queue('b',function($doc) {
+                var timeStamp2 = Date.now();
+                expect(timeStamp2 - timeStamp1).to.be.gte(10);
+                callback();
+            });
+        });
+
+        it('Execute a function as a timeout', function(callback) {
+            var spider = create({ delay: () => 10,
+                done: ()  => {}
+            });
+
+            mock(spider, function(opts, done) {
+                setTimeout(() => done(null, "<html><head></head><body>test</body></html>"), 1)
+            });
+
+            var timeStamp1;
+            spider.queue('a', function() {
+                timeStamp1 = Date.now()
+            });
+
+            spider.queue('b',function($doc) {
+                var timeStamp2 = Date.now();
+                expect(timeStamp2 - timeStamp1).to.be.gte(10);
+                callback();
+            });
+        });
+    });
+
     // TO BE CONTINUED...
 });

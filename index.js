@@ -108,7 +108,12 @@ Spider.prototype = {
 
 		if (!this.full()) {
 			if (this.opts.delay) {
-				setTimeout(this.dequeue.bind(this, url), this.opts.delay);
+				// if delay is a function call it
+				if(typeof this.opts.delay === 'function') {
+				    setTimeout(  this.dequeue.bind(this, url), this.opts.delay(url));
+                } else {
+                    setTimeout(this.dequeue.bind(this, url), this.opts.delay);
+                }
 			} else {
 				this.dequeue(url);
 			}

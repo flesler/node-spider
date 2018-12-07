@@ -32,7 +32,7 @@ Spider.prototype = {
 		return this.active.length >= this.opts.concurrent;
 	},
 
-	queue: function(url, done) {
+	queue: function(url, done, extraHeaders) {
 		if (this.visited[url]) return;
 
 		if (!this.opts.allowDuplicates) {
@@ -41,18 +41,22 @@ Spider.prototype = {
 
 		if (this.full()) {
 			this.log('Queueing', url);
-			this.pending.push([url, done]);
+			this.pending.push([url, done, extraHeaders]);
 		} else {
-			this.load(url, done);
+			this.load(url, done, extraHeaders);
 		}
 	},
 
-	load: function(url, done, referrer) {
+	load: function(url, done, extraHeaders, referrer) {
 		this.log('Loading', url);
 		this.active.push(url);
 
 		if (this.opts.addReferrer) {
 			this.opts.headers.Referer = referrer;
+		}
+
+		if(extraHeaders) {
+			this.opts.headers = Object.assign({}, this.opts.headers, extraHeaders);
 		}
 
 		this.opts.url = url;
@@ -104,7 +108,12 @@ Spider.prototype = {
 
 		if (!this.full()) {
 			if (this.opts.delay) {
-				setTimeout(this.dequeue.bind(this, url), this.opts.delay);
+				// if delay is a function call it
+				if(typeof this.opts.delay === 'function') {
+				    setTimeout(  this.dequeue.bind(this, url), this.opts.delay(url));
+                } else {
+                    setTimeout(this.dequeue.bind(this, url), this.opts.delay);
+                }
 			} else {
 				this.dequeue(url);
 			}
